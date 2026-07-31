@@ -1,0 +1,47 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  windows:
+    runs-on: windows-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Audit runtime dependencies
+        run: npm run audit:prod
+
+      - name: Typecheck and test
+        run: |
+          npm run typecheck
+          npm test
+
+      - name: Build unpacked Windows application
+        run: npm run build
+
+      - name: Verify packaged application
+        run: npm run verify:package
+
+      - name: Upload unpacked application
+        uses: actions/upload-artifact@v4
+        with:
+          name: translator-meow-windows-unpacked
+          path: release/win-unpacked/
+          if-no-files-found: error
+          retention-days: 14

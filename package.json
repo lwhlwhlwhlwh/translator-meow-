@@ -1,0 +1,48 @@
+{
+  "name": "translator-meow",
+  "version": "0.1.0",
+  "description": "Windows-first local document translator",
+  "productName": "喵喵翻译",
+  "main": "dist-electron/main/index.js",
+  "author": "Translator Meow",
+  "license": "MIT",
+  "engines": {
+    "node": ">=20 <25",
+    "npm": ">=10"
+  },
+  "scripts": {
+    "dev": "concurrently -k \"vite\" \"wait-on http://localhost:5173 && electron .\"",
+    "build": "npm run build:renderer && npm run build:electron && electron-builder --win --dir",
+    "build:electron": "node scripts/build-electron.mjs",
+    "build:renderer": "vite build",
+    "package:win": "npm run build:renderer && npm run build:electron && electron-builder --win",
+    "verify:package": "node scripts/verify-package.mjs",
+    "check": "npm run typecheck && npm test && npm run build:renderer && npm run build:electron",
+    "audit:prod": "npm audit --omit=dev --audit-level=high",
+    "typecheck": "tsc --noEmit -p tsconfig.json && tsc --noEmit -p tsconfig.node.json",
+    "test": "vitest run",
+    "start": "electron ."
+  },
+  "dependencies": {
+    "@pdf-lib/fontkit": "^1.1.1",
+    "jszip": "^3.10.1",
+    "pdf-lib": "^1.17.1",
+    "pdfjs-dist": "^4.10.38",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "@types/react": "^18.3.18",
+    "@types/react-dom": "^18.3.5",
+    "@vitejs/plugin-react": "^4.3.4",
+    "concurrently": "^9.1.2",
+    "electron": "^39.8.10",
+    "electron-builder": "^26.15.7",
+    "esbuild": "^0.25.12",
+    "typescript": "^5.7.2",
+    "vite": "^6.4.3",
+    "vitest": "^3.2.7",
+    "wait-on": "^8.0.2"
+  }
+}

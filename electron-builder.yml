@@ -1,0 +1,15 @@
+appId: com.translatormeow.app
+productName: 喵喵翻译
+directories:
+  output: release
+files:
+  - dist-electron/**
+  - dist/**
+  - package.json
+  - "!node_modules{,/**}"
+asarUnpack: []
+win:
+  target: nsis
+nsis:
+  oneClick: false
+  allowToChangeInstallationDirectory: true
