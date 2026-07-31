@@ -39,7 +39,7 @@ jobs:
         run: npm run verify:package
 
       - name: Upload unpacked application
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: translator-meow-windows-unpacked
           path: release/win-unpacked/
