@@ -19,7 +19,8 @@ const entries = execFileSync(process.execPath, [asarCli, 'list', asar], {
   env: { ...process.env, NODE_PATH: process.env.NODE_PATH ?? '' }
 })
   .split(/\r?\n/)
-  .filter(Boolean);
+  .map(entry => `/${entry.replaceAll('\\', '/').replace(/^\/+/, '')}`)
+  .filter(entry => entry !== '/');
 
 for (const expected of ['/package.json', '/dist-electron/main/index.js', '/dist-electron/preload/index.js', '/dist/index.html']) {
   if (!entries.includes(expected)) throw new Error(`Missing ASAR entry: ${expected}`);
